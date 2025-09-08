@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Basic DOM Manipulation</title>
+  <style>
+    #message {
+      font-size: 20px;
+      color: darkgreen;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 id="title">Welcome!</h1>
+  <p id="message">Click the button to change this text.</p>
+  <button id="changeBtn">Change Text</button>
+  <button id="addBtn">Add New Paragraph</button>
+
+  <script>
+    // Access elements
+    const title = document.getElementById('title');
+    const message = document.getElementById('message');
+    const changeBtn = document.getElementById('changeBtn');
+    const addBtn = document.getElementById('addBtn');
+
+    // Change text and style on button click
+    changeBtn.addEventListener('click', () => {
+      message.textContent = 'The text has been changed!';
+      message.style.color = 'blue';
+    });
+
+    // Add a new paragraph on button click
+    addBtn.addEventListener('click', () => {
+      const newPara = document.createElement('p');
+      newPara.textContent = 'This is a new paragraph added dynamically.';
+      document.body.appendChild(newPara);
+    });
+  </script>
+
+</body>
+</html>
+
