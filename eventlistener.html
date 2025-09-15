@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combined DOM & Events Program</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .highlight { background-color: #f0f0f0; padding: 10px; margin-top: 10px; }
+        .color-button { margin: 5px; padding: 10px; cursor: pointer; }
+        .box { width: 50px; height: 50px; border: 1px solid black; display: inline-block; margin: 5px; }
+    </style>
+</head>
+<body>
+
+    <h1>Combined DOM Selection and Event Listeners</h1>
+
+    <!-- 1. Selection by ID -->
+    <button id="single-button">Click Me (ID)</button>
+    <p id="message">No button has been clicked yet.</p>
+
+    <hr>
+
+    <!-- 2. Selection by Class -->
+    <h2>Color Changer (Class)</h2>
+    <div id="button-container">
+        <button class="color-button">Red</button>
+        <button class="color-button">Green</button>
+        <button class="color-button">Blue</button>
+    </div>
+    <div id="color-box" class="box"></div>
+
+    <hr>
+
+    <!-- 3. Selection by Tag and Multiple Elements -->
+    <h2>Tag and Delegation (All H2s)</h2>
+    <p class="parent-container">
+        <span class="delegated-item">Item 1 (Delegated)</span><br>
+        <span class="delegated-item">Item 2 (Delegated)</span>
+    </p>
+
+    <hr>
+
+    <!-- 4. Form Event -->
+    <h2>Form Submission</h2>
+    <form id="my-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required>
+        <button type="submit">Submit</button>
+    </form>
+    <p id="form-feedback"></p>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // This ensures the script runs only after the full HTML document has been loaded.
+            
+            // --- 1. Selection by ID and a simple click event ---
+            const singleButton = document.getElementById('single-button');
+            const messageParagraph = document.getElementById('message');
+
+            singleButton.addEventListener('click', () => {
+                messageParagraph.textContent = 'The single button was clicked!';
+                console.log('Single button click detected.');
+            });
+
+            // --- 2. Selection by Class and iterating for event listeners ---
+            const colorButtons = document.querySelectorAll('.color-button');
+            const colorBox = document.getElementById('color-box');
+
+            colorButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const color = button.textContent.toLowerCase();
+                    colorBox.style.backgroundColor = color;
+                    console.log(`Background color changed to ${color}.`);
+                });
+            });
+
+            // --- 3. Selection by Tag Name and event delegation ---
+            const allH2s = document.querySelectorAll('h2');
+            allH2s.forEach(h2 => {
+                h2.style.color = '#0056b3';
+            });
+
+            // Event delegation on a parent element
+            const parentContainer = document.querySelector('.parent-container');
+            parentContainer.addEventListener('click', (event) => {
+                // Check if the clicked element has the specific class
+                if (event.target.classList.contains('delegated-item')) {
+                    event.target.style.fontWeight = 'bold';
+                    console.log(`${event.target.textContent} was clicked via delegation.`);
+                }
+            });
+
+            // --- 4. Form event listener to prevent default behavior ---
+            const myForm = document.getElementById('my-form');
+            const formFeedback = document.getElementById('form-feedback');
+
+            myForm.addEventListener('submit', (event) => {
+                // Prevent the default form submission and page reload
+                event.preventDefault();
+
+                const nameInput = document.getElementById('name');
+                const nameValue = nameInput.value;
+
+                formFeedback.textContent = `Hello, ${nameValue}! Form submission prevented.`;
+                console.log(`Form submitted with name: ${nameValue}.`);
+            });
+        });
+    </script>
+</body>
+</html>
